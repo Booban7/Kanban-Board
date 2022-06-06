@@ -1,0 +1,27 @@
+<div class="main">
+  <div cdkDropListGroup>
+    <div class="column" *ngFor="let column of boardService.getBoard$() | async">
+      <h2 class="column__header">{{ column.title }}</h2>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="column.list"
+        class="column__list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="example-box" *ngFor="let ticket of column.list" cdkDrag>
+          <ticket
+            [ticket]="ticket"
+            (emitDeleteTicket)="onDeleteTicket($event, column.id)"
+          ></ticket>
+        </div>
+      </div>
+      <dialog
+        (emitText)="onAddTicket($event, column.id)"
+        [question]="'Add new card in ' + column.title + ' column'"
+      >
+        <button mat-raised-button class="w-100 mb-1 btn-add">+</button>
+      </dialog>
+    </div>
+  </div>
+</div>
